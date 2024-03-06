@@ -1,0 +1,31 @@
+lovelace:
+  mode: yaml
+  resources:
+   - url: /local/frigate-card/frigate-hass-card.js
+     type: module
+
+
+panel_iframe:
+  portainer:
+    title: "Portainer"
+    url: "http://192.168.1.111:9000/#/containers"
+    icon: mdi:docker
+  router:
+    title: "Router"
+    url: "http://192.168.1.1/cgi-bin/login_advance.cgi"
+    icon: mdi:router-wireless
+  mdiindex:
+    title: MDI Icon Index
+    icon: mdi:vector-square
+    url: https://raw.githack.com/james-fry/home-assistant-mdi/master/home-assistant-mdi.html
+
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml

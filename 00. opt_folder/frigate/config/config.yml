@@ -1,0 +1,21 @@
+mqtt:
+  host: 192.168.1.111
+  user: userver
+  password: 8331
+
+cameras:
+  Camgate:
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:yoyo@8331yo@192.168.1.64
+          roles:
+            - detect
+            - rtmp
+            - record
+    detect:
+      width: 1280
+      height: 720
+      fps: 24
+
+    record:
+      enabled: True
