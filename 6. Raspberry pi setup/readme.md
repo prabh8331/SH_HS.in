@@ -121,7 +121,8 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /opt/frigate/config/config.yml:/config/config.yml:ro
-      - /opt/frigate/media:/media/frigate
+      - /mnt/sdcard:/media/frigate
+      #- /opt/frigate/media:/media/frigate
       - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
         target: /tmp/cache
         tmpfs:
@@ -134,6 +135,7 @@ services:
 
 ```
 
+mkdir config
 cd config
 sudo nano config.yml
 
@@ -205,7 +207,7 @@ sudo apt-get install raspi-config
 sudo raspi-config
 
 Performance Options" > "GPU Memory" and set it to at least 128MB.
-
+set to 256
 
 vcgencmd get_mem gpu
 
@@ -214,6 +216,11 @@ vcgencmd get_mem gpu
 
 sudo apt update && sudo apt upgrade -y
 sudo apt-get install sysbench
+
+sudo apt update
+sudo apt dist-upgrade
+
+vcgencmd measure_clock arm
 
 sysbench --test=cpu --cpu-max-prime=2000 --num-threads=4 run
 
@@ -340,3 +347,129 @@ smmothing - 50
 after changes - 
 
 ![Alt text](<Screenshot 2024-03-24 123057.png>)
+
+
+
+techniques applied to impove the encoding performance - 
+
+Reduce Camera Resolution: Lower the resolution of the camera feed in Frigate's configuration. This can reduce the amount of data that needs to be processed and improve performance.
+
+Adjust FPS (Frames Per Second): Reduce the FPS setting in the camera configuration to lower the processing load on the Raspberry Pi.
+
+Overclock the Raspberry Pi: If you're comfortable with it, you can try overclocking your Raspberry Pi. This can increase its performance, but be aware that it may void the warranty and could potentially cause stability issues if not done correctly.
+
+assign More RAM to gpu: increase gpu ram
+
+
+
+
+## boot using the usb drive 
+
+after boot from sd open terminal and 
+
+sudo apt-get upgrade -y
+
+
+sudo rpi-eeprom-update
+
+sudo rpi-eeprom-update -a
+
+make a new bootable usb drive using raspberry pi imager
+
+follow all previous steps: neetd to update the sudo nano /etc/netplan/50-cloud-init.yaml to connect with ethernet cable
+
+
+sudo apt update
+sudo apt full-upgrade
+
+sudo apt install rpi-eeprom
+sudo rpi-eeprom-update -d -a
+
+<!-- echo program_usb_boot_mode=1 | sudo tee -a /boot/config.txt
+
+sudo nano /boot/config.txt
+
+sudo reboot
+
+sudo rpi-eeprom-config --edit
+
+add in the end of file 
+BOOT_ORDER=0xf41
+
+
+vcgencmd otp_dump | grep 17:
+if output is - 17:3020000a , then usb boot mood is enabled
+ -->
+
+
+
+
+
+use sd card as storage in ressbary pi
+1. format the sd card 
+2. insert the sd card (and usb both)
+
+sudo apt update
+sudo apt install exfat-fuse
+
+<!-- insted of inserting in sd slot insert with card reader, because it alway boot first from sd card -->
+
+<!-- everywere mmcblk0 will be changed -->
+
+sudo mkfs.exfat /dev/mmcblk0
+
+
+sudo fdisk /dev/mmcblk0
+Press n to create a new partition.
+Choose the default options to create a primary partition using the entire disk.
+Press w to write the changes and exit.
+
+sudo mkfs.fat -F32 /dev/mmcblk0p1
+
+
+<!-- sudo apt update
+sudo apt install exfat-fuse exfat-utils -->
+
+
+
+sudo chown -R prabh /opt/
+cd /opt/
+mkdir sdcard
+
+lsblk
+- sd name is - mmcblk0
+
+sudo mount -t exfat /dev/mmcblk0 /opt/sdcard
+
+sudo mkdir /mnt/sdcard
+<!-- sudo mount /dev/mmcblk0p1 /mnt/sdcard -->
+sudo mount /dev/sdb1 /mnt/sdcard
+
+
+
+verify - 
+<!-- ls /opt/sdcard
+df -h /opt/sdcard -->
+ls /mnt/sdcard
+df -h /mnt/sdcard
+
+
+auttomatically mount the sd card wihle system boot
+
+sudo blkid /dev/sdb1
+/dev/sdb1: UUID="2320-D92C" BLOCK_SIZE="512" TYPE="vfat" PARTUUID="f6df04ed-01"
+
+sudo nano /etc/fstab
+
+add in the end - 
+<!-- /dev/mmcblk0p1 /mnt/sdcard           auto    defaults          0       2 -->
+UUID=2320-D92C /mnt/sdcard  vfat  defaults  0  2
+
+
+sudo mount -a
+sudo reboot
+
+
+
+
+docker run -d --restart always cloudflare/cloudflared:latest tunnel --no-autoupdate run --token
