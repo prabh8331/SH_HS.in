@@ -320,3 +320,23 @@ cd /opt/portainer/
 docker compose up -d
 
 
+
+hkvision camera paramater change to make video quality little to so that recoding is better
+
+current - 
+
+stream type - main stream (Normal)
+resolution - 1920*1080P
+bitreate type - variable 
+video quality - - medium 
+frame rate- 25 fps
+mzx bitrate - - 4096
+video endcoing - h.264
+h.264+ - off
+profile - main profile 
+i frame interval - 50
+smmothing - 50
+
+after changes - 
+
+![Alt text](<Screenshot 2024-03-24 123057.png>)
