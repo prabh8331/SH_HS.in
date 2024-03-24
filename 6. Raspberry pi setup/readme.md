@@ -112,7 +112,8 @@ version: "3.9"
 services:
   frigate:
     container_name: frigate
-    restart: never
+    restart: always
+    privileged: true
     image: ghcr.io/blakeblackshear/frigate:stable
     shm_size: "64mb"
     devices:
@@ -143,6 +144,7 @@ mqtt:
 cameras:
   Camgate:
     ffmpeg:
+      hwaccel_args: preset-rpi-64-h264
       inputs:
         - path: rtsp://admin:yoyo@8331yo@192.168.1.64
           roles:
@@ -170,6 +172,7 @@ cameras:
         default: 30
 
 
+
   Camgate2:
     ffmpeg:
       inputs:
@@ -190,6 +193,124 @@ cameras:
 
 
 ```
+
+Raspbarry pi hardware accleration
+
+1. Increading gpu memory 
+
+sudo apt-get update
+
+sudo apt-get install raspi-config
+
+sudo raspi-config
+
+Performance Options" > "GPU Memory" and set it to at least 128MB.
+
+
+vcgencmd get_mem gpu
+
+
+2. Overclock 
+
+sudo apt update && sudo apt upgrade -y
+sudo apt-get install sysbench
+
+sysbench --test=cpu --cpu-max-prime=2000 --num-threads=4 run
+
+```
+prabh@ubuntu:~$ sysbench --test=cpu --cpu-max-prime=2000 --num-threads=4 run
+WARNING: the --test option is deprecated. You can pass a script name or path on the command ine without any options.
+WARNING: --num-threads is deprecated, use --threads instead
+sysbench 1.0.20 (using system LuaJIT 2.1.0-beta3)
+
+Running the test with following options:
+Number of threads: 4
+Initializing random number generator from current time
+
+
+Prime numbers limit: 2000
+
+Initializing worker threads...
+
+Threads started!
+
+CPU speed:
+    events per second: 38820.01
+
+General statistics:
+    total time:                          10.0007s
+    total number of events:              388335
+
+Latency (ms):
+         min:                                    0.07
+         avg:                                    0.10
+         max:                                   29.45
+         95th percentile:                        0.07
+         sum:                                39821.60
+
+Threads fairness:
+    events (avg/stddev):           97083.7500/2315.29
+    execution time (avg/stddev):   9.9554/0.01
+
+
+```
+
+sudo cp /boot/config.txt /boot/config.txt.bak
+
+sudo nano /boot/config.txt
+
+arm_freq=2100
+gpu_freq=750
+over_voltage=6
+
+
+
+sudo reboot
+
+
+sysbench --test=cpu --cpu-max-prime=2000 --num-threads=4 run
+
+
+```
+
+prabh@ubuntu:~$ sysbench --test=cpu --cpu-max-prime=2000 --num-threads=4 run
+WARNING: the --test option is deprecated. You can pass a script name or path on              the command line without any options.
+WARNING: --num-threads is deprecated, use --threads instead
+sysbench 1.0.20 (using system LuaJIT 2.1.0-beta3)
+
+Running the test with following options:
+Number of threads: 4
+Initializing random number generator from current time
+
+
+Prime numbers limit: 2000
+
+Initializing worker threads...
+
+Threads started!
+
+CPU speed:
+    events per second: 43825.16
+
+General statistics:
+    total time:                          10.0004s
+    total number of events:              438392
+
+Latency (ms):
+         min:                                    0.07
+         avg:                                    0.09
+         max:                                   64.17
+         95th percentile:                        0.07
+         sum:                                39825.15
+
+Threads fairness:
+    events (avg/stddev):           109598.0000/6640.52
+    execution time (avg/stddev):   9.9563/0.00
+
+
+
+```
+
 
 
 - rsbry pi
