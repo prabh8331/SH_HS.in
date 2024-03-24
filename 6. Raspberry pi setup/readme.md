@@ -143,6 +143,11 @@ sudo nano config.yml
 mqtt:
   enabled: False
 
+logger:
+  logs:
+    frigate.record.maintainer: debug
+
+
 cameras:
   Camgate:
     ffmpeg:
