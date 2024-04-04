@@ -84,7 +84,25 @@ ssh-keygen -f "/home/userver/.ssh/known_hosts" -R "192.168.1.222"
 
 docker ps --filter "name=portainer"
 
+```yaml
 
+version: '3.0'
+
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce
+    restart: always
+    ports:
+      - "9000:9000/tcp"
+    environment:
+      - TZ=Asia/Kolkata
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/portainer:/data
+
+
+```
 
  mosquitto
 
@@ -153,7 +171,7 @@ cameras:
     ffmpeg:
       hwaccel_args: preset-rpi-64-h264
       inputs:
-        - path: rtsp://admin:yoyo@8331yo@192.168.1.64
+        - path: rtsp://admin:yoyo@8331yo@192.168.1.112
           roles:
             - detect
             - rtmp
@@ -179,11 +197,11 @@ cameras:
         default: 30
 
 
-
-  Camgate2:
+  Campark:
     ffmpeg:
+      hwaccel_args: preset-rpi-64-h264
       inputs:
-        - path: rtsp://admin:yoyo@8331yo@192.168.1.65
+        - path: rtsp://admin:yoyo@8331yo@192.168.1.113
           roles:
             - detect
             - rtmp
@@ -193,10 +211,20 @@ cameras:
       height: 720
       fps: 24
 
-
-
     record:
+      enabled: true
+      retain:
+        days: 15
+        mode: motion
+      events:
+        retain:
+          default: 30
+          mode: motion
+
+    snapshots:
       enabled: True
+      retain:
+        default: 30
 
 
 ```
@@ -227,10 +255,13 @@ sudo apt dist-upgrade
 
 vcgencmd measure_clock arm
 
+<!-- frequency(48)=1600382848
+ -->
+
 sysbench --test=cpu --cpu-max-prime=2000 --num-threads=4 run
 
-```
-prabh@ubuntu:~$ sysbench --test=cpu --cpu-max-prime=2000 --num-threads=4 run
+
+<!-- prabh@ubuntu:~$ sysbench --test=cpu --cpu-max-prime=2000 --num-threads=4 run
 WARNING: the --test option is deprecated. You can pass a script name or path on the command ine without any options.
 WARNING: --num-threads is deprecated, use --threads instead
 sysbench 1.0.20 (using system LuaJIT 2.1.0-beta3)
@@ -263,9 +294,32 @@ Latency (ms):
 Threads fairness:
     events (avg/stddev):           97083.7500/2315.29
     execution time (avg/stddev):   9.9554/0.01
+ -->
 
 
-```
+<!-- CPU speed:
+    events per second: 56729.36
+
+General statistics:
+    total time:                          10.0002s
+    total number of events:              567534
+
+Latency (ms):
+         min:                                    0.07
+         avg:                                    0.07
+         max:                                    2.31
+         95th percentile:                        0.07
+         sum:                                39861.37
+
+Threads fairness:
+    events (avg/stddev):           141883.5000/208.34
+    execution time (avg/stddev):   9.9653/0.00 -->
+
+
+
+
+
+
 
 sudo cp /boot/config.txt /boot/config.txt.bak
 
@@ -283,8 +337,7 @@ sudo reboot
 sysbench --test=cpu --cpu-max-prime=2000 --num-threads=4 run
 
 
-```
-
+<!-- 
 prabh@ubuntu:~$ sysbench --test=cpu --cpu-max-prime=2000 --num-threads=4 run
 WARNING: the --test option is deprecated. You can pass a script name or path on              the command line without any options.
 WARNING: --num-threads is deprecated, use --threads instead
@@ -319,9 +372,8 @@ Threads fairness:
     events (avg/stddev):           109598.0000/6640.52
     execution time (avg/stddev):   9.9563/0.00
 
+ -->
 
-
-```
 
 
 
