@@ -246,6 +246,10 @@ sudo nano /etc/systemd/logind.conf
 HandleLidSwitch=ignore
 ```
 
+22. cloudflare
+
+sudo docker run -d --restart always cloudflare/cloudflared:latest tunnel --no-autoupdate run --token
+
 ##### Resources Links
 Official tutorial Link: <https://ubuntu.com/tutorials/install-ubuntu-server#3-boot-from-install-media> <br>
 Other Good tutorial Link: <https://www.tecmint.com/install-ubuntu-20-04-server/> <br>
