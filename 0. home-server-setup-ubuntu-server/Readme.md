@@ -226,9 +226,12 @@ sudo usermod -aG optusers pserver
 # set permission on the /opt
 sudo chown -R root:optusers /opt
 sudo chmod -R 775 /opt
+sudo chmod g+w /opt
 
 # verify permissions
 ls -l /opt
+
+# logout and login
 
 # see users in group 
 getent group optusers | cut -d: -f4
