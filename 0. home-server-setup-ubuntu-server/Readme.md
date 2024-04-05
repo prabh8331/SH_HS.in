@@ -3,13 +3,16 @@
 Welcome to my repository for setting up a home server using Ubuntu Server.
 
 ### Table of Contents: 
-1. [Make USB Stick bootable with Ubuntu server](#1-make-usb-stick-bootable-with-ubuntu-server)
-   - [Download Rufus](#11-download-rufus)
-   - [Download Ubuntu Server ISO Image](#12-download-ubuntu-server-iso-image)
-   - [Burning an Ubuntu Server ISO image to USB Drive](#13-burning-an-ubuntu-server-iso-image-to-usb-drive)
-2. [Install Ubuntu server](#2-install-ubuntu-server)
-   - [Open boot manager and boot using the usb](#21-open-boot-manager-and-boot-using-the-usb)
-   - [Install Ubuntu Server](#22-install-ubuntu-server)
+- [Home Server Setup Guide](#home-server-setup-guide)
+  - [Table of Contents:](#table-of-contents)
+  - [1: Make USB Stick bootable with Ubuntu server](#1-make-usb-stick-bootable-with-ubuntu-server)
+    - [1.1: Download Rufus](#11-download-rufus)
+    - [1.2: Download Ubuntu Server ISO Image](#12-download-ubuntu-server-iso-image)
+    - [1.3: Burning an Ubuntu Server ISO image to USB Drive](#13-burning-an-ubuntu-server-iso-image-to-usb-drive)
+  - [2. Install Ubuntu server](#2-install-ubuntu-server)
+    - [2.1: Open boot manager and boot using the usb](#21-open-boot-manager-and-boot-using-the-usb)
+    - [2.2: Install Ubuntu Server](#22-install-ubuntu-server)
+      - [Resources Links](#resources-links)
 
 [Resources Links](#resources-links)
 
@@ -181,8 +184,22 @@ Remove the bootable USB Stick
 
 Once Reboot is complete enter your user_name and password 
 
+17. updates
 
-17. Setup openssh-server & net-tools install 
+```bash
+sudo apt update
+sudo apt upgrade
+sudo do-release-upgrade
+sudo apt-get update && sudo apt-get dist-upgrade
+sudo unattended-upgrade
+sudo apt autoremove
+sudo apt-get autoremove --purge
+sudo apt-get clean
+sudo snap refresh
+sudo dpkg-reconfigure -plow unattended-upgrades
+```
+
+18. Setup openssh-server & net-tools install 
 
 ```bash
 sudo apt install openssh-server
