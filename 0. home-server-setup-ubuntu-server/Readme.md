@@ -238,6 +238,14 @@ getent group optusers | cut -d: -f4
 
 ```
 
+21. Lid close
+
+```bash
+sudo nano /etc/systemd/logind.conf
+# make ->
+HandleLidSwitch=ignore
+```
+
 ##### Resources Links
 Official tutorial Link: <https://ubuntu.com/tutorials/install-ubuntu-server#3-boot-from-install-media> <br>
 Other Good tutorial Link: <https://www.tecmint.com/install-ubuntu-20-04-server/> <br>
