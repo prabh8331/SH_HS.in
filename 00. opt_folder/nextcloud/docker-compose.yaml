@@ -1,0 +1,33 @@
+version: "2"
+services: 
+  app: 
+    depends_on: 
+      - db
+    environment: 
+      - MYSQL_PASSWORD=8331
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_HOST=db
+    image: nextcloud
+    links: 
+      - db
+    ports: 
+      - "8091:80"
+    restart: always
+    volumes: 
+      - /opt/nextcloud/nextcloud:/var/www/html
+      - /opt/nextcloud/app/apps:/var/www/html/custom_apps
+      - /opt/nextcloud/app/config:/var/www/html/config
+      - /opt/nextcloud/app/data:/var/www/html/data
+      - /opt/nextcloud/app/theme:/var/www/html/themes
+  db: 
+    command: "--transaction-isolation=READ-COMMITTED --binlog-format=ROW"
+    environment: 
+      - MYSQL_ROOT_PASSWORD=8331
+      - MYSQL_PASSWORD=8331
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+    image: "mariadb:10.5"
+    restart: always
+    volumes: 
+      - /opt/nextcloud/db:/var/lib/mysql

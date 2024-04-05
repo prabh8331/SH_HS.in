@@ -1,0 +1,22 @@
+version: '3'
+
+
+services:
+
+  code-server:
+
+    image: codercom/code-server
+
+    container_name: code-server
+
+    ports:
+
+      - "9432:8080"
+
+    volumes:
+
+      - /opt/code_server:/home/coder/project
+
+    environment:
+
+      - PASSWORD=password
