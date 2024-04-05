@@ -1,3 +1,5 @@
+version: '3.0'
+
 services:
   portainer:
     container_name: portainer

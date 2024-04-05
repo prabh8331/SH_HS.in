@@ -214,6 +214,26 @@ ifconfig
 https://docs.docker.com/engine/install/ubuntu/
 
 
+20. User complete access to /opt
+
+```bash
+# create group
+sudo groupadd optusers
+
+# add user to the group
+sudo usermod -aG optusers pserver
+
+# set permission on the /opt
+sudo chown -R root:optusers /opt
+sudo chmod -R 775 /opt
+
+# verify permissions
+ls -l /opt
+
+# see users in group 
+getent group optusers | cut -d: -f4
+
+```
 
 ##### Resources Links
 Official tutorial Link: <https://ubuntu.com/tutorials/install-ubuntu-server#3-boot-from-install-media> <br>
