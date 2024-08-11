@@ -21,3 +21,4 @@ Welcome, I'm maintaining this repository for my YouTube channel, 'SmartHome and 
     - configure the DNS with cloudflare 
 6. Install Home assistant docket image on server 
     - Host the Home assistant 
+
